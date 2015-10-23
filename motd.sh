@@ -127,10 +127,28 @@ label3="$borderBar  $(color $statsLabelColor "Memory........:") $label3$borderBa
 label4="$(extend "$(df -h ~ | awk 'NR==2 { printf "Total: %sB, Used: %sB, Free: %sB",$2,$3,$4; }')")"
 label4="$borderBar  $(color $statsLabelColor "Home space....:") $label4$borderBar"
 
-label5="$(extend "$(/opt/vc/bin/vcgencmd measure_temp | cut -c "6-9")ºC")"
-label5="$borderBar  $(color $statsLabelColor "Temperature...:") $label5$borderBar"
+proCount=$(ps ax | wc -l | tr -d " ")
+label5="$(extend "Total $proCount running")"
+label5="$borderBar  $(color $statsLabelColor "Procesess.....:") $label5$borderBar"
 
-stats="$label1\n$label2\n$label3\n$label4\n$label5"
+cpuTemp0=$(cat /sys/class/thermal/thermal_zone0/temp)
+cpuTemp1=$(($cpuTemp0/1000))
+cpuTemp2=$(($cpuTemp0/100))
+cpuTempM=$(($cpuTemp2 % $cpuTemp1))
+TODAY=$(date)
+
+gpuTemp0=$(/opt/vc/bin/vcgencmd measure_temp)
+gpuTemp0=${gpuTemp0//\'/°}
+gpuTemp0=${gpuTemp0//temp=/}
+cpuTemp=$cpuTemp1"."$cpuTempM"'C"
+
+label6="$(extend "$cpuTemp")"
+label6="$borderBar  $(color $statsLabelColor "CPU Temp......:") $label6$borderBar"
+
+label7="$(extend "$gpuTemp0")"
+label7="$borderBar  $(color $statsLabelColor "GPU Temp......:") $label7$borderBar"
+
+stats="$label1\n$label2\n$label3\n$label4\n$label5\n$label6\n$label7"
 
 # Print motd
 echo -e "$header\n$borderEmptyLine\n$greetings\n$borderEmptyLine\n$stats\n$borderEmptyLine\n$borderBottomLine"       
