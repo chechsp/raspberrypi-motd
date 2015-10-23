@@ -97,16 +97,11 @@ greetings="$borderBar$(color $greetingsColor "$(center "Welcome back, $me!")")$b
 greetings="$greetings$borderBar$(color $greetingsColor "$(center "$(date +"%A, %d %B %Y, %T")")")$borderBar"
 
 # System information
-read loginFrom loginIP loginDate <<< $(last $me --time-format iso -2 | awk 'NR==2 { print $2,$3,$4 }')
 
-# TTY login
-if [[ $loginDate == - ]]; then
-  loginDate=$loginIP
-  loginIP=$loginFrom
-fi
+lastLoginIp="$(lastlog -u $me | sed -ne '2{p;q}' | cut -c 27-42)"
 
-if [[ $loginDate == *T* ]]; then
-  login="$(date -d $loginDate +"%A, %d %B %Y, %T") ($loginIP)"
+if [[ $lastLoginIp != "" ]]; then
+  login=$lastLoginIp
 else
   # Not enough logins
   login="None"
