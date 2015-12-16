@@ -98,7 +98,7 @@ greetings="$greetings$borderBar$(color $greetingsColor "$(center "$(date +"%A, %
 
 # System information
 
-lastLoginIp="$(lastlog -u $me | sed -ne '2{p;q}' | cut -c 27-42)"
+lastLoginIp="$(lastlog -u $me | sed -ne '2{p;q}' | cut -c 27-62)"
 
 if [[ $lastLoginIp != "" ]]; then
   login=$lastLoginIp
@@ -140,10 +140,7 @@ cpuTemp=$cpuTemp1"."$cpuTempM"'C"
 label6="$(extend "$cpuTemp")"
 label6="$borderBar  $(color $statsLabelColor "CPU Temp......:") $label6$borderBar"
 
-label7="$(extend "$gpuTemp0")"
-label7="$borderBar  $(color $statsLabelColor "GPU Temp......:") $label7$borderBar"
-
-stats="$label1\n$label2\n$label3\n$label4\n$label5\n$label6\n$label7"
+stats="$label1\n$label2\n$label3\n$label4\n$label5\n$label6"
 
 # Print motd
-echo -e "$header\n$borderEmptyLine\n$greetings\n$borderEmptyLine\n$stats\n$borderEmptyLine\n$borderBottomLine"       
+echo -e "$borderTopLine\n$borderEmptyLine\n$borderEmptyLine\n$greetings\n$borderEmptyLine\n$stats\n$borderEmptyLine\n$borderBottomLine"       
