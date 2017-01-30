@@ -139,14 +139,7 @@ greetings="$greetings$borderBar$(color $greetingsColor2 "$(center "$(date +"%A, 
 
 # System information
 
-lastLoginIp="$(lastlog -u $me | sed -ne '2{p;q}' | cut -c 27-62)"
-
-if [[ $lastLoginIp != "" ]]; then
-  login=$lastLoginIp
-else
-  # Not enough logins
-  login="None"
-fi
+login="$(last $me | awk 'NR==2 { print $3"  -  "$4" "$5" "$6" "$7 }')"
 
 label1="$(extend "$login")"
 label1="$borderBar   $(color $statsLabelColor "Last Login....:") $label1$borderBar"
